@@ -1,0 +1,104 @@
+// Open/close navigation when clicked .nav-icon
+function nav() {
+    let icon = document.getElementById('icon')
+    let nav = document.getElementById('nav')
+    let navList = nav.classList
+    if (navList.contains('active')) {
+        icon.classList.remove('rotate_animation');
+        nav.classList.remove('active');
+    } else {
+        icon.classList.add('rotate_animation');
+        nav.classList.add('active');
+    }
+}
+
+// Intersection observer //
+
+window.addEventListener("load", (event) => {
+    const places = document.querySelectorAll('.fade-in');
+
+    observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+        if (entry.intersectionRatio > 0) {
+            entry.target.classList.add('appear');
+            }
+        });
+    });
+
+    places.forEach(image => {
+    observer.observe(image);
+    });
+})
+
+
+// Fullscreen photo
+try {
+    var photoElements = document.getElementsByClassName("photo");
+
+    for (var i = 0; i < photoElements.length; i++) {
+        photoElements[i].addEventListener('click', fillIt, false);
+    }
+
+    function fillIt() {
+        let chosenSrc = this.getElementsByTagName('img')[0].src;
+        let fullIt = document.getElementById('fullscreen');
+        let fullImage = fullIt.getElementsByTagName('img')[0];
+        fullImage.src = chosenSrc;
+        fullIt.classList.add('active');
+    }
+
+    document.getElementById('fullscreen').getElementsByTagName('img')[0].addEventListener("click", unfillIt);
+
+    function unfillIt() {
+        document.getElementById('fullscreen').classList.remove('active');
+    }
+
+} catch (error) {
+    console.error()
+}
+
+// Fullscreen video 
+try {
+    var videoElements = document.getElementsByClassName("video");
+
+    for (var i = 0; i < videoElements.length; i++) {
+        videoElements[i].addEventListener('click', fillItV, false);
+    }
+
+    function fillItV() {
+        let chosenSrc = this.getElementsByTagName('img')[0].src;
+        var numMatches = chosenSrc.slice(-6).match(/(\d+)/);
+        let fullIt = document.getElementById('fullscreen-video');
+        let fullVideo = fullIt.getElementsByTagName('source')[0];
+        newSrc = `/aerial_footage/${numMatches[0]}.mp4`;
+        fullIt.getElementsByTagName('video')[0].src = newSrc;
+        fullIt.classList.add('active');
+    }
+
+    document.getElementById('fullscreen-video').getElementsByTagName('button')[0].addEventListener("click", unfillItV);
+
+    function unfillItV() {
+        document.getElementById('fullscreen-video').classList.remove('active');
+    }
+
+} catch (error) {
+    console.error()
+}
+
+// check if its a mobile device to change video to photo
+try {
+    function checkMatch(x) {
+        if (x.matches) { // If media query matches
+            backVidCon = document.getElementsByClassName("video-container")[0]
+            backVid = backVidCon.getElementsByTagName('video')[0].remove();
+            backVidCon.innerHTML += "<img id='mobile' src='/photos/st_lucia/st_lucia17.jpg'></img>";
+        }
+      }
+      
+      var x = window.matchMedia("(max-width: 480px)")
+      checkMatch(x)
+} catch (error) {
+    console.log(error)
+}
+
+
